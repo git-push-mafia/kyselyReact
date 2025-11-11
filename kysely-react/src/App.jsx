@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
 import { useRef } from 'react';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
@@ -23,23 +25,24 @@ function App() {
   }, []);
 
   const columns = [
-    {headerName: 'Id', field: 'kyselyId'},
-    {headerName: 'Nimi', field: 'nimi'},
-    {headerName: 'Kuvaus', field: 'kuvaus'}
+    {headerName: 'Id', field: 'kyselyId', flex: 1},
+    {headerName: 'Nimi', field: 'nimi', flex: 2},
+    {headerName: 'Kuvaus', field: 'kuvaus', flex: 3}
   ]
 
 
   return (
-    <div>
+    <div style={{ width: '100%', textAlign: 'left' }}>
       <h1>Kyselyt</h1>
+      <div style={{ height: 500, width: "100%" }}>
         <AgGridReact
           ref={gridRef}
           onGridReady={ params => gridRef.current = params.api}
           rowData={kyselyt}
           columnDefs={columns}
           rowSelection={{ mode: 'singleRow', checkboxes: false}}
-
         />
+      </div>  
     </div>
   )
 }
