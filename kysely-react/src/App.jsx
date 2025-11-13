@@ -9,7 +9,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Kyselylista />} />
-        <Route path="/kysely/:kyselyId" element={<Kysely />} />
+        <Route path="/kysely/:kyselyId/kysymykset" element={<Kysely />} />
       </Routes> 
     </Router> 
   )
