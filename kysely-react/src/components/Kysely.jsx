@@ -31,9 +31,13 @@ export default function Kysely() {
             <h1>{kysely.nimi}</h1>
             <div>{kysely.kuvaus}</div>
             <ul>
-                {kysely.kysymykset && kysely.kysymykset.map((item, index) => (
-                    <li key={index}>{item}</li>
-                ))}
+                {Array.isArray(kysely?.kysymykset) && kysely.kysymykset.length > 0 ? (
+                kysely.kysymykset.map((item) => (
+                    <li key={item.kysymysId}>{item.kysymys}</li>
+                ))
+                ) : (
+                <li>No questions available.</li>
+                )}
             </ul>
         </div>
     )

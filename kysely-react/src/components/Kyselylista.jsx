@@ -11,6 +11,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 export default function Kyselylista() {
   const [kyselyt, setKyselyt] = useState([]);
   const gridRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:8080/api/kyselyt')
@@ -30,9 +31,7 @@ export default function Kyselylista() {
     {headerName: 'Kuvaus', field: 'kuvaus', flex: 3}
   ]
 
-  const navigate = useNavigate();
-
-
+  
   return (
     <div style={{ width: '100%', textAlign: 'left' }}>
       <h1>Kyselyt</h1>
