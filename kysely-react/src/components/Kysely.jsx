@@ -30,7 +30,7 @@ export default function Kysely() {
         <div style={{ width: '100%', textAlign: 'left' }}>
             <h1>{kysely.nimi}</h1>
             <div>{kysely.kuvaus}</div>
-            <ul>
+            <ol>
                 {Array.isArray(kysely?.kysymykset) && kysely.kysymykset.length > 0 ? (
                 kysely.kysymykset.map((item) => (
                     <li key={item.kysymysId}>{item.kysymys}</li>
@@ -38,7 +38,7 @@ export default function Kysely() {
                 ) : (
                 <li>No questions available.</li>
                 )}
-            </ul>
+            </ol>
         </div>
     )
 }
