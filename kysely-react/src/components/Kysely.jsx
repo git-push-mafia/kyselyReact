@@ -59,8 +59,8 @@ export default function Kysely() {
         const dataToSend = {
             kyselyId: kysely.kyselyId,
             vastaukset: kysely.kysymykset.map(k => ({
-            kysymysId: k.kysymysId,
-            vastaus: k.vastaus
+                vastaus: k.vastaus,
+                kysymys: { kysymysId: k.kysymysId }
             }))
         };
 
