@@ -2,6 +2,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Kysely from "./components/Kysely";
 import Kyselylista from "./components/Kyselylista";
+import Tulosraportti from './components/Tulosraportti';
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Kyselylista />} />
         <Route path="/kysely/:kyselyId/" element={<Kysely />} />
+        <Route path="/kysely/:kyselyId/raportti" element={<Tulosraportti />}/>
       </Routes> 
     </Router> 
   )
