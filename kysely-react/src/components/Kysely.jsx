@@ -73,7 +73,7 @@ export default function Kysely() {
             if(!response.ok) {
                 throw new Error("Error in fetching data :(");
             }
-            alert("Maybe works???");
+            alert("Kiitos kyselyyn vastaamiseta! :) ");
             navigate("/");
 
         })
