@@ -3,8 +3,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import { useNavigate } from 'react-router-dom';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import Button from '@mui/material/Button';
 import RaporttiButton from './RaporttiButton';
+import VastausButton from './VastausButton';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -15,6 +15,8 @@ export default function Kyselylista() {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    // Haetaan kaikki kyselyt
     fetch('http://localhost:8080/api/kyselyt')
       .then(response => {
         if (!response.ok)
@@ -26,11 +28,18 @@ export default function Kyselylista() {
       .catch(err => console.error(err))
   }, []);
 
+  // Kyselylistan kentät
   const columns = useMemo(() => [
-    { headerName: 'Id', field: 'kyselyId', flex: 1 },
     { headerName: 'Nimi', field: 'nimi', flex: 2 },
     { headerName: 'Kuvaus', field: 'kuvaus', flex: 3 },
-
+    {
+      headerName: 'Vastaa',
+      field: 'kyselyIdVastaa',
+      flex: 2,
+      filter: false,
+      sortable: false,
+      cellRenderer: VastausButton 
+    },
     {
       headerName: 'Raportti',
       field: 'kyselyIdRaportti',
@@ -55,11 +64,6 @@ export default function Kyselylista() {
           getRowId={ (params) => {console.log(params.data.kyselyId);
             return params.data.kyselyId;
            }}
-           onCellClicked={(event) => {
-            if (event.colDef.field !== 'kyselyIdRaportti') {
-              navigate(`/kysely/${event.data.kyselyId}`);
-            }
-          }}
           />
       </div>  
     </div >

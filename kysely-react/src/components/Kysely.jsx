@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -14,6 +13,7 @@ export default function Kysely() {
 
     const navigate = useNavigate();
 
+    // Haetaan kyselyn tiedot backendistä
     useEffect(() => {
 
         fetch(`http://localhost:8080/api/kyselyt/${kyselyId}`)
@@ -24,10 +24,12 @@ export default function Kysely() {
                 return response.json();
             })
             .then(apiData => {
+                // Lisätään jokaiselle kysymykselle tyhjä vastaus, jos sitä ei ole vielä määritelty
                 const kysymyksetVastauksilla = apiData.kysymykset.map(k => ({
                     ...k,
                     vastaus: k.vastaus || ""
                 }));
+                // Tallennetaan koko kysely stateen
                 setKysely({...apiData, kysymykset: kysymyksetVastauksilla});
             })
             .catch(err => console.error("Failed to fetch data", err))
@@ -35,6 +37,7 @@ export default function Kysely() {
 
     if (!kysely) return <div>Ladataan...</div>;
 
+    // Päivitetään yhden kysymyksen vastaus stateen
     const handleChangeAnswer = (kysymysId, value) => {
         setKysely(prev => ({
             ...prev,
@@ -50,12 +53,14 @@ export default function Kysely() {
         e.preventDefault();
         console.log("bling blang blong");
 
+        // Jos vastauskentät on tyhjiä, alert
         const tyhjia = kysely.kysymykset.filter(k => !k.vastaus.trim());
         if (tyhjia.length > 0) {
             alert("Vastaa kaikkiin kysymyksiin!");
             return;
         }
 
+        // Muodostetaan backendin odottama data
         const dataToSend = {
             kyselyId: kysely.kyselyId,
             vastaukset: kysely.kysymykset.map(k => ({
@@ -64,6 +69,7 @@ export default function Kysely() {
             }))
         };
 
+        // Lähetetään vastaukset backendille
         fetch('http://localhost:8080/api/vastaukset', {
             method: "POST",
             headers: { "Content-Type" : "application/json" },
@@ -73,6 +79,7 @@ export default function Kysely() {
             if(!response.ok) {
                 throw new Error("Error in fetching data :(");
             }
+            // Ilmoitus ja paluu etusivulle
             alert("Kiitos kyselyyn vastaamiseta! :) ");
             navigate("/");
 
@@ -83,36 +90,48 @@ export default function Kysely() {
 
 
     return (
-        <form onSubmit={handleSubmitAnswer}>
-            <Typography variant="h4">{kysely.nimi}</Typography>
-            <Typography>{kysely.kuvaus}</Typography>
-            <ol>
-                {kysely?.kysymykset?.length > 0 ? (
-                    kysely.kysymykset.map(item => (
-                        <li key={item.kysymysId}>
-                            <Typography>{item.kysymys}</Typography>
-                        
-                            <TextField
-                                placeholder="Kirjoita tähän vastaus"
-                                value={item.vastaus || ""}
-                                onChange={(e) => handleChangeAnswer(item.kysymysId, e.target.value)}
-                            />
-                        </li>
-                    ))
-                ) : (    
-                    <li>No questions available.</li>        
-                )}
-            </ol>
+        <div>
+            <form onSubmit={handleSubmitAnswer}>
+                <Typography variant="h4">{kysely.nimi}</Typography>
+                <Typography>{kysely.kuvaus}</Typography>
+                <ol>
+                    {kysely?.kysymykset?.length > 0 ? (
+                        kysely.kysymykset.map(item => (
+                            <li key={item.kysymysId}>
+                                <Typography>{item.kysymys}</Typography>
+                            
+                                <TextField
+                                    placeholder="Kirjoita tähän vastaus"
+                                    value={item.vastaus || ""}
+                                    onChange={(e) => handleChangeAnswer(item.kysymysId, e.target.value)}
+                                    multiline
+                                    minRows={2}
+                                    sx={{ width: "50%" }}
+                                />
+                            </li>
+                        ))
+                    ) : (    
+                        <li>No questions available.</li>        
+                    )}
+                </ol>
 
+                <Button 
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={!kysely.kysymykset || kysely.kysymykset.length === 0}
+                >
+                    Tallenna vastaukset
+                </Button>
+            </form>
             <Button 
                 type="submit"
                 variant="contained"
-                color="primary"
-                disabled={!kysely.kysymykset || kysely.kysymykset.length === 0}
+                color="grey"
+                onClick={() => navigate("/")}
             >
-                Tallenna vastaukset
+                Palaa etusivulle
             </Button>
-        </form>
-
+        </div>
     )
 }

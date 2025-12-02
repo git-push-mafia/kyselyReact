@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 
 export default function Tulosraportti() {
@@ -9,14 +10,17 @@ export default function Tulosraportti() {
     const [kysely, setKysely] = useState(null);
     const [raportti, setRaportti] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
 
+        // Haetaan yksittäinen kysely
         fetch(`http://localhost:8080/api/kyselyt/${kyselyId}`)
             .then(res => res.json())
             .then(data => setKysely(data))
             .catch(err => console.error(err));
 
+        // Haetaan kyselyn vastaukset
         fetch(`http://localhost:8080/api/kyselyt/${kyselyId}/vastaukset`)
         .then(response => {
            if (!response.ok)
@@ -32,6 +36,7 @@ export default function Tulosraportti() {
         return <div>Ladataan vastauksia...</div>;
     }
 
+    // Vastaukset ryhmitellään kysymyksittäin
     const kysymyksetMap = {};
     raportti.forEach(item => {
         const id = item.kysymys.kysymysId;
@@ -41,6 +46,7 @@ export default function Tulosraportti() {
             vastaukset: []
         };
         }
+        // Kysymyksille kootaan lista vastauksista
         kysymyksetMap[id].vastaukset.push(item.vastaus);
     });
     const kysymyksetArray = Object.entries(kysymyksetMap).map(([id, kysymys]) => ({
@@ -50,8 +56,8 @@ export default function Tulosraportti() {
 
     return (
         <div>
-            <h2>{kysely.nimi}</h2>
-
+            <h1>{kysely.nimi}</h1>
+            <h3>Tässä näet tämän kyselyn kaikki kysymykset ja niihin annetut vastaukset</h3>
             {kysymyksetArray.map((kysymys) => (
                 <div key={kysymys.kysymysId} style={{ marginBottom: "1.5rem" }}>
                     <h3>{kysymys.kysymysteksti}</h3>
@@ -64,6 +70,14 @@ export default function Tulosraportti() {
                     </ul>
                 </div>
             ))}
+            <Button 
+                type="submit"
+                variant="contained"
+                color="grey"
+                onClick={() => navigate("/")}
+            >
+                Palaa etusivulle
+            </Button>
         </div>
     );
 }
