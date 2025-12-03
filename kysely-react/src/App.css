@@ -4,4 +4,8 @@
   padding: 2rem;
 }
 
-
+.ag-cell {
+  padding: 20px;
+  display: flex !important;
+  align-items: center;
+}

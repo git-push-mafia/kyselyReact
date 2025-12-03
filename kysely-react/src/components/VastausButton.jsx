@@ -8,7 +8,7 @@ export default function VastausButton(props) {
         }}
         style={{
         padding: "6px 12px",
-        background: "#4dd219ff",
+        background: "#18a72dff",
         color: "white",
         border: "none",
         borderRadius: "4px",

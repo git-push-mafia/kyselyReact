@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import RaporttiButton from './RaporttiButton';
 import VastausButton from './VastausButton';
+import '../App.css';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -35,7 +36,7 @@ export default function Kyselylista() {
     {
       headerName: 'Vastaa',
       field: 'kyselyIdVastaa',
-      flex: 2,
+      flex: 1,
       filter: false,
       sortable: false,
       cellRenderer: VastausButton 
@@ -43,7 +44,7 @@ export default function Kyselylista() {
     {
       headerName: 'Raportti',
       field: 'kyselyIdRaportti',
-      flex: 2,
+      flex: 1,
       filter: false,
       sortable: false,
       cellRenderer: RaporttiButton 
@@ -59,6 +60,7 @@ export default function Kyselylista() {
           onGridReady={ params => gridRef.current = params.api}
           rowData={kyselyt}
           columnDefs={columns}
+          rowHeight={50}
           context={{ navigate }}
           rowSelection={{ mode: 'singleRow', checkboxes: false}}
           getRowId={ (params) => {console.log(params.data.kyselyId);

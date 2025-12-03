@@ -115,23 +115,28 @@ export default function Kysely() {
                     )}
                 </ol>
 
-                <Button 
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    disabled={!kysely.kysymykset || kysely.kysymykset.length === 0}
-                >
-                    Tallenna vastaukset
-                </Button>
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', width: '50%' }}>
+                    <Button
+                        sx={{ padding: '12px', minWidth: '100px', fontSize: '14px', backgroundColor: "#d13899ff" }} 
+                        type="button"
+                        variant="contained"
+                        onClick={() => navigate("/")}
+                    >
+                    Palaa etusivulle
+                    </Button>
+
+                    <Button 
+                         sx={{ padding: '12px', minWidth: '100px', fontSize: '14px', backgroundColor: "#18a72dff" }}
+                        type="submit"
+                        variant="contained"
+                        disabled={!kysely.kysymykset || kysely.kysymykset.length === 0}
+                    >
+                        Tallenna vastaukset
+                    </Button>
+                </div>
             </form>
-            <Button 
-                type="submit"
-                variant="contained"
-                color="grey"
-                onClick={() => navigate("/")}
-            >
-                Palaa etusivulle
-            </Button>
+            
+            
         </div>
     )
 }

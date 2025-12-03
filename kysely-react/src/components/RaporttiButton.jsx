@@ -8,14 +8,14 @@ export default function RaporttiButton(props) {
         }}
         style={{
         padding: "6px 12px",
-        background: "#1976d2",
+        background: "#d13899ff",
         color: "white",
         border: "none",
         borderRadius: "4px",
         cursor: "pointer"
       }}
     >
-      Näytä raportti
+      Näytä vastaukset
     </button>
   );
 }

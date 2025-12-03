@@ -70,10 +70,10 @@ export default function Tulosraportti() {
                     </ul>
                 </div>
             ))}
-            <Button 
+            <Button
+                style={{ padding: '12px', minWidth: '100px', fontSize: '14px', backgroundColor: "#d13899ff" }}
                 type="submit"
                 variant="contained"
-                color="grey"
                 onClick={() => navigate("/")}
             >
                 Palaa etusivulle
