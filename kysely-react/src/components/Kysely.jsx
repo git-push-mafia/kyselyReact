@@ -99,19 +99,37 @@ export default function Kysely() {
                         kysely.kysymykset.map(item => (
                             <li key={item.kysymysId}>
                                 <Typography>{item.kysymys}</Typography>
-                            
-                                <TextField
-                                    placeholder="Kirjoita tähän vastaus"
-                                    value={item.vastaus || ""}
-                                    onChange={(e) => handleChangeAnswer(item.kysymysId, e.target.value)}
-                                    multiline
-                                    minRows={2}
-                                    sx={{ width: "50%" }}
-                                />
+                                {item.vastaustyyppi === "teksti" && (
+                                    <TextField
+                                        placeholder="Kirjoita tähän vastaus"
+                                        value={item.vastaus || ""}
+                                        onChange={(e) => handleChangeAnswer(item.kysymysId, e.target.value)}
+                                        multiline
+                                        minRows={2}
+                                        sx={{ width: "50%" }}
+                                    />
+                                )}
+
+                                {item.vastaustyyppi === "monivalinta" && (
+                                    <div style={{ marginTop: "0.5rem" }}>
+                                        {item.vaihtoehdot?.map((option) => (
+                                            <div key={option.vaihtoehtoId} style={{ marginBottom: "0.3rem" }}>
+                                                <input
+                                                    type="radio"
+                                                    name={`kysymys-${item.kysymysId}`}
+                                                    value={option.vaihtoehto}
+                                                    checked={item.vastaus === option.vaihtoehto}
+                                                    onChange={() => handleChangeAnswer(item.kysymysId, option.vaihtoehto)}
+                                                />
+                                                <label style={{ marginLeft: "0.5rem" }}>{option.vaihtoehto}</label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </li>
                         ))
                     ) : (    
-                        <li>No questions available.</li>        
+                        <div>No questions available.</div>        
                     )}
                 </ol>
 

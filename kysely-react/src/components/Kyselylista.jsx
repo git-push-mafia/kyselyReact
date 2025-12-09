@@ -31,28 +31,34 @@ export default function Kyselylista() {
 
   // Kyselylistan kentät
   const columns = useMemo(() => [
-    { headerName: 'Nimi', field: 'nimi', flex: 2 },
-    { headerName: 'Kuvaus', field: 'kuvaus', flex: 3 },
+    { headerName: 'Nimi', field: 'nimi', flex: 2,
+      cellStyle: { fontSize: '20px', whiteSpace: 'normal', wordWrap: 'break-word' }
+    },
+    { headerName: 'Kuvaus', field: 'kuvaus', flex: 3,
+      cellStyle: { fontSize: '17px', whiteSpace: 'normal', wordWrap: 'break-word' }
+    },
     {
       headerName: 'Vastaa',
       field: 'kyselyIdVastaa',
       flex: 1,
       filter: false,
       sortable: false,
+      headerClass: 'hide-header',
       cellRenderer: VastausButton 
     },
     {
-      headerName: 'Raportti',
+      headerName: 'Tulosraportti',
       field: 'kyselyIdRaportti',
       flex: 1,
       filter: false,
       sortable: false,
+      headerClass: 'hide-header',
       cellRenderer: RaporttiButton 
     }
   ], []);
   
   return(
-    <div style = {{ width: '100%', textAlign: 'left' }} >
+    <div style = {{ width: '100%', textAlign: 'left', fontSize: '16px' }} >
       <h1>Kyselyt</h1>
       <div style={{ height: 500, width: "100%" }}>
         <AgGridReact
@@ -60,7 +66,8 @@ export default function Kyselylista() {
           onGridReady={ params => gridRef.current = params.api}
           rowData={kyselyt}
           columnDefs={columns}
-          rowHeight={50}
+          rowHeight={80}
+          headerHeight={40}
           context={{ navigate }}
           rowSelection={{ mode: 'singleRow', checkboxes: false}}
           getRowId={ (params) => {console.log(params.data.kyselyId);
